@@ -1,20 +1,21 @@
-"""Entry point: copy the pre-rendered news image to /output/entry.png.
+"""Copy the pre-rendered front page to /output/entry.png.
 
-Uses only the Python standard library. The image itself is produced by
-render.py (Pillow) and committed as news_image.png next to this file.
+Only the Python standard library is used here. The picture itself is
+drawn by render.py (Pillow) and shipped in this repository as
+news_image.png, next to this file.
 """
-import os
+
 import shutil
+from pathlib import Path
 
 
 def main():
-    here = os.path.dirname(os.path.abspath(__file__))
-    src = os.path.join(here, "news_image.png")
-    out_dir = "/output"
-    os.makedirs(out_dir, exist_ok=True)
-    dst = os.path.join(out_dir, "entry.png")
-    shutil.copyfile(src, dst)
-    print("wrote", dst)
+    folder = Path(__file__).resolve().parent
+    source = folder / "news_image.png"
+    target = Path("/output") / "entry.png"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, target)
+    print("wrote", target, target.stat().st_size, "bytes")
 
 
 if __name__ == "__main__":
